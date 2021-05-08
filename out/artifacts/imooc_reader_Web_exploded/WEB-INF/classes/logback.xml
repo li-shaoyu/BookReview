@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- logback自动加载此文件-->
+<configuration>
+    <!-- 追加器配置 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 编码器配置 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss} %-5level [%thread] %logger{30} - %msg%n</pattern>
+            <!-- 解决中文乱码问题 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <!-- level： 日志的最低输出级别-->
+    <root level="debug">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

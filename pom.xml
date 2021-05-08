@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>imooc-reader</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- 引入阿里云镜像，加速 -->
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- 一、 spring与springMVC的整合-->
+        <!-- 1.1 配置Maven依赖： 核心依赖：spring-webmvc -->
+        <!-- 注意： maven的依赖需要引入到lab中 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+
+        <!-- Freemarker模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.30</version>
+        </dependency>
+
+        <!-- Freemaker整合支持包 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+
+        <!-- Jackson 序列化工具包-->
+        <!-- 核心 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <!-- 实体类注解包，用于序列化与反序列化-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <!-- 数据绑定包 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <!-- 二、 spring和mybatis的整合-->
+        <!-- 2.1 引入依赖：核心依赖 mybatis-spring -->
+        <!-- MyBatis 底层也是要用jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+
+        <!-- MyBatis与Spring整合组件 -->
+        <!-- 问题：整合包该如何使用？-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <!-- 数据库jdbc驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+        </dependency>
+        <!-- 阿里巴巴druid连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.14</version>
+        </dependency>
+
+        <!-- 三、 整合其他组件 -->
+        <!-- 3.1 单元测试依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <!-- 测试开发阶段还未配置tomct，所以需要引入，tomcat自带-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <!-- 声明，打包时会忽略这个依赖 -->
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 3.2 logback日志组件 精简版 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <!-- 四、 整合MyBatis-Plus 框架-->
+        <!-- 定义：基于mybatis的敏捷开发的插件，增强工具 -->
+        <!-- 作用：快速完成对应数据表的增删改查 -->
+        <!-- 4.1 引入mybatis-plus依赖 -->
+        <!-- MyBatis-Plus依赖 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+</project>
