@@ -3,14 +3,18 @@ package com.imooc.reader.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.reader.entity.Book;
 import com.imooc.reader.entity.Category;
+import com.imooc.reader.entity.Evaluation;
 import com.imooc.reader.service.BookService;
 import com.imooc.reader.service.CategoryService;
+import com.imooc.reader.service.EvaluationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -27,6 +31,9 @@ public class BookController {
 
     @Resource
     private BookService bookService;
+
+    @Resource
+    private EvaluationService evaluationService;
 
     /**
      * 显示首页
@@ -61,4 +68,26 @@ public class BookController {
         IPage<Book> pageObject = bookService.paging(categoryId , order , p, 10);
         return pageObject;
     }
+
+    // URL绑定，使用springMVC路径变量进行捕获
+    @GetMapping("/book/{id}")
+    // @PathVariable： 路径变量
+    public ModelAndView showDetail(@PathVariable("id") Long id, HttpSession session) {
+        // 通过selectById(id)获取图书对象
+        Book book = bookService.selectById(id);
+
+        // 把具体的id传入，得到评论列表
+        List<Evaluation> evaluationList = evaluationService.selectByBookId(id);
+
+        // 跳转到名字为detail的freemaker页面
+        ModelAndView mav = new ModelAndView("/detail");
+
+        // 将查询到的对象放入到ModelAndView中
+        mav.addObject("book", book);
+        mav.addObject("evaluationList", evaluationList);
+
+        return mav;
+    }
+
+
 }
