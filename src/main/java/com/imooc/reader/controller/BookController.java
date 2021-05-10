@@ -43,7 +43,8 @@ public class BookController {
 
     /**
      * 分页查询图书列表
-     *
+     * @param categoryId 分类编号
+     * @param order 排序方式
      * @param p 页号
      * @return 分页对象
      */

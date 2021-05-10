@@ -11,9 +11,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @Param
  * @return
  */
+// 映射相应的数据库表
 @TableName("book")
 public class Book {
     // 图书编号
+    // 映射相应主键，并设置为自增
     @TableId(type = IdType.AUTO)
     private Long bookId;
     // 书名
