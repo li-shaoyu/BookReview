@@ -5,7 +5,7 @@ import com.imooc.reader.entity.Book;
 
 /**
  * @ClassName BookService
- * @Description TODO
+ * @Description 和Mapper文件中一样
  * @date 2021/5/9 19:28
  * @Param
  * @return
@@ -29,5 +29,9 @@ public interface BookService {
      */
     public Book selectById(Long bookId);
 
+    /**
+     * 更新图书评分/评价数量
+     */
+    public void updateEvaluation();
 
 }

@@ -63,13 +63,21 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 根据图书编号查询图书对象
-     *
      * @param bookId 图书编号
      * @return 图书对象
      */
     public Book selectById(Long bookId) {
         Book book = bookMapper.selectById(bookId);
         return book;
+    }
+
+    /**
+     * 更新图书评分/评价数量
+     */
+    // 开启声明式事务
+    @Transactional
+    public void updateEvaluation() {
+        bookMapper.updateEvaluation();
     }
 
 }

@@ -135,4 +135,7 @@
         </property>
     </bean>
 
+    <!-- 开启Spring Task定时任务的注解模式-->
+    <task:annotation-driven/>
+
 </beans>
