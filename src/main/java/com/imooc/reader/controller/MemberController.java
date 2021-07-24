@@ -40,10 +40,12 @@ public class MemberController {
         return new ModelAndView("/login");
     }
 
+    // 用户注册逻辑
     @PostMapping("/registe")
     @ResponseBody
     public Map registe(String vc, String username, String password, String nickname, HttpServletRequest request) {
-        // 正确验证码
+        // 1、 验证码校验
+        // 获取前端用户输入的验证码字符
         String verifyCode = (String) request.getSession().getAttribute("kaptchaVerifyCode");
         // 验证码对比
         Map result = new HashMap();
@@ -52,6 +54,7 @@ public class MemberController {
             result.put("code", "VC01");
             result.put("msg", "验证码错误");
         } else {
+            // 2、 验证码校验成功后，跳转到Service层处理
             try {
                 memberService.createMember(username, password, nickname);
                 result.put("code", "0");
@@ -66,6 +69,7 @@ public class MemberController {
         return result;
     }
 
+    // 用户登录逻辑
     @PostMapping("/check_login")
     @ResponseBody
     // 原生对象：HttpSession session

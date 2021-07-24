@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
         member.setUsername(username);
         member.setNickname(nickname);
 
-        // 3、 保存到数据库
+        // 3、 密码处理
         // 产生盐值 （1000-1999）
         int salt = new Random().nextInt(1000) + 1000;
         // MD5摘要处理

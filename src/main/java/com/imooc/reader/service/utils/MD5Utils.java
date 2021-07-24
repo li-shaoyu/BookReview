@@ -4,7 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 /**
  * @className: MD5Utils
  * @author: 李绍宇
- * @description: TODO
+ * @description: MD5算法处理用户密码
  * @date: 2021/7/24 10:49
  * @version: 1.0
  */
@@ -13,7 +13,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 public class MD5Utils {
     public static String md5Digest(String source , Integer salt){
         char[] ca = source.toCharArray();
-        //混淆源数据
+        // 混淆源数据
         for(int i = 0 ; i < ca.length ; i++){
             ca[i] = (char) (ca[i] + salt);
         }
