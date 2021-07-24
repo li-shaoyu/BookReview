@@ -1,6 +1,7 @@
 package com.imooc.reader.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.imooc.reader.entity.Evaluation;
 import com.imooc.reader.entity.Member;
 import com.imooc.reader.entity.MemberReadState;
 import com.imooc.reader.mapper.EvaluationMapper;
@@ -71,7 +72,6 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 登录检查
-     *
      * @param username 用户名
      * @param password 密码
      * @return 登录对象
@@ -97,7 +97,6 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 获取阅读状态
-     *
      * @param memberId 会员编号
      * @param bookId   图书编号
      * @return 阅读状态对象
@@ -116,7 +115,6 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 更新阅读状态
-     *
      * @param memberId  会员编号
      * @param bookId    图书编号
      * @param readState 阅读状态
@@ -148,6 +146,47 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return memberReadState;
+    }
+
+    /**
+     * 发布新的短评
+     * @param memberId 会员编号
+     * @param bookId   图书编号
+     * @param score    评分
+     * @param content  短评内容
+     * @return 短评对象
+     */
+    public Evaluation evaluate(Long memberId, Long bookId, Integer score, String content) {
+        // 创建实例对象
+        Evaluation evaluation = new Evaluation();
+        // 获取前端的信息
+        evaluation.setMemberId(memberId);
+        evaluation.setBookId(bookId);
+        evaluation.setScore(score);
+        evaluation.setContent(content);
+        evaluation.setCreateTime(new Date());
+        // 评论状态
+        evaluation.setState("enable");
+        // 默认点赞数量
+        evaluation.setEnjoy(0);
+        // 插入
+        evaluationMapper.insert(evaluation);
+        return evaluation;
+    }
+
+    /**
+     * 短评点赞
+     * @param evaluationId 短评编号
+     * @return 短评对象
+     */
+    public Evaluation enjoy(Long evaluationId) {
+        // 获取到该评论信息的点赞数量
+        Evaluation evaluation = evaluationMapper.selectById(evaluationId);
+        // 点赞数量+1
+        evaluation.setEnjoy(evaluation.getEnjoy()+1);
+        // 更新
+        evaluationMapper.updateById(evaluation);
+        return evaluation;
     }
 
 }

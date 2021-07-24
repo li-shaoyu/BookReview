@@ -83,12 +83,15 @@
             });
 
             $("#btnEvaluation").click(function(){
-                $("#score").raty({});// 转换为星型组件
-                $("#dlgEvaluation").modal("show");// 显示短评对话框
+                // 转换为星型组件
+                $("#score").raty({});
+                // 显示短评对话框
+                $("#dlgEvaluation").modal("show");
             })
             // 评论对话框提交数据
             $("#btnSubmit").click(function(){
-                var score = $("#score").raty("score");// 获取评分
+                // 获取评分
+                var score = $("#score").raty("score");
                 var content = $("#content").val();
                 if(score == 0 || $.trim(content) == ""){
                     return;
@@ -100,7 +103,8 @@
                     content : content
                 },function(json){
                     if(json.code = "0"){
-                        window.location.reload();// 刷新当前页面
+                        // 刷新当前页面
+                        window.location.reload();
                     }
                 },"json")
             })

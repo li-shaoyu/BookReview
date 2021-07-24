@@ -1,5 +1,6 @@
 package com.imooc.reader.controller;
 
+import com.imooc.reader.entity.Evaluation;
 import com.imooc.reader.entity.Member;
 import com.imooc.reader.service.MemberService;
 import com.imooc.reader.service.exception.BussinessException;
@@ -121,5 +122,47 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * 发布新的短评
+     */
+    @PostMapping("/evaluate")
+    @ResponseBody
+    public Map evaluate(Long memberId,Long bookId,Integer score,String content){
+        Map result = new HashMap();
+        try {
+            Evaluation eva = memberService.evaluate(memberId, bookId, score, content);
+            result.put("code", "0");
+            result.put("msg", "success");
+            result.put("evaluation", eva);
+        }catch(BussinessException ex){
+            ex.printStackTrace();
+            result.put("code", ex.getCode());
+            result.put("msg", ex.getMsg());
+        }
+        return result;
+    }
+
+    /**
+     * 评论点赞
+     * @param evaluationId
+     * @return
+     */
+    @PostMapping("/enjoy")
+    @ResponseBody
+    public Map enjoy(Long evaluationId){
+        Map result = new HashMap();
+        try {
+            Evaluation eva = memberService.enjoy(evaluationId);
+            result.put("code", "0");
+            result.put("msg", "success");
+            // 返回最新的点赞数量
+            result.put("evaluation", eva);
+        }catch(BussinessException ex){
+            ex.printStackTrace();
+            result.put("code", ex.getCode());
+            result.put("msg", ex.getMsg());
+        }
+        return result;
+    }
 
 }
