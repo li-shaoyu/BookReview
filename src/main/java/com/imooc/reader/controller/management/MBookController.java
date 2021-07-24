@@ -1,5 +1,6 @@
 package com.imooc.reader.controller.management;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.reader.entity.Book;
 import com.imooc.reader.service.BookService;
 import com.imooc.reader.service.exception.BussinessException;
@@ -107,4 +108,38 @@ public class MBookController {
         }
         return result;
     }
+
+    /**
+     * 分页查询图书数据
+     * @param page
+     * @param limit
+     * @return
+     */
+    @GetMapping("/list")
+    @ResponseBody
+    public Map list(Integer page , Integer limit){
+        // 默认查询第一页
+        if(page == null){
+            page = 1;
+        }
+        // 默认10行
+        if(limit == null){
+            limit = 10;
+        }
+
+        // 实现之前首页的分页接口，忽略数据类别和降序，设置为NULL
+        IPage<Book> pageObject = bookService.paging(null, null, page, limit);
+        // 返回的数据
+        Map result = new HashMap();
+        result.put("code", "0");
+        result.put("msg", "success");
+        // 当前页面数据
+        result.put("data", pageObject.getRecords());
+        // 未分页时记录总数
+        result.put("count", pageObject.getTotal());
+
+        return result;
+    }
+
+
 }
