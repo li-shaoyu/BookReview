@@ -29,6 +29,7 @@ public class BookController {
     @Resource
     private CategoryService categoryService;
 
+    // 注入BookService，实则是BookService的实现类BookServiceImpl，其实现了BookService接口的两个方法
     @Resource
     private BookService bookService;
 
@@ -40,7 +41,6 @@ public class BookController {
      * @return
      */
     @GetMapping("/")
-
     public ModelAndView showIndex() {
         ModelAndView mav = new ModelAndView("/index");
         List<Category> categoryList = categoryService.selectAll();
@@ -86,6 +86,7 @@ public class BookController {
         mav.addObject("book", book);
         mav.addObject("evaluationList", evaluationList);
 
+        // 返回mav结果给前端（处理器适配器）
         return mav;
     }
 

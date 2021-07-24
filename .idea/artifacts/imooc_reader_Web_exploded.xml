@@ -6,6 +6,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="imooc-reader" />
+          <element id="library" level="project" name="webapp" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.6.RELEASE" />
@@ -39,6 +40,8 @@
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-core:3.3.2" />
           <element id="library" level="project" name="Maven: com.baomidou:mybatis-plus-annotation:3.3.2" />
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:3.1" />
+          <element id="library" level="project" name="Maven: com.jhlabs:filters:2.0.235-1" />
+          <element id="library" level="project" name="Maven: com.github.penggle:kaptcha:2.3.2" />
         </element>
       </element>
     </root>

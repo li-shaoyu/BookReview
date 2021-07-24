@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 // 声明式事务注解
 @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
 public class BookServiceImpl implements BookService {
+//    注入BookMapper，其实现BaseMapper，有许多CURD方法
     @Resource
     private BookMapper bookMapper;
 

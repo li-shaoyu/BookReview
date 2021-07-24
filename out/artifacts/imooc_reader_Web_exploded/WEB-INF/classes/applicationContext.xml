@@ -63,7 +63,7 @@
     </bean>
 
     <!-- 2.2 MyBatis与Spring的整合配置 -->
-    <!-- 配置数据源与连接池 -->
+    <!-- druid配置数据源与连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <!-- JDBC驱动指向，MySQL8要加cj -->
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
@@ -87,7 +87,7 @@
     <bean id="sessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <!-- 设置数据源 指向前面创建的dataSource -->
         <property name="dataSource" ref="dataSource"/>
-        <!-- 存储sql语句的文件 -->
+        <!-- 存储sql语句的XML文件 -->
         <property name="mapperLocations" value="classpath:mappers/*.xml"/>
         <!-- 2.5 MyBatis配置文件地址 -->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
@@ -110,4 +110,49 @@
     <!-- 基于注解的事务配置模式 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!-- 配置Kaptcha 所生成的图品样式 -->
+    <!-- DefaultKaptcha 对象完成验证码的生成 -->
+<!--    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">-->
+<!--        <property name="config">-->
+<!--            &lt;!&ndash; 内嵌一个bean &ndash;&gt;-->
+<!--            <bean class="com.google.code.kaptcha.util.Config">-->
+<!--                &lt;!&ndash; constructor-arg： 构造参数&ndash;&gt;-->
+<!--                <constructor-arg>-->
+<!--                    <props>-->
+<!--                        &lt;!&ndash; 验证码图片不生成边框 &ndash;&gt;-->
+<!--                        <prop key="kaptcha.border">no</prop>-->
+<!--                        &lt;!&ndash; 验证码图片宽度为120像素 &ndash;&gt;-->
+<!--                        <prop key="kaptcha.image.width">120</prop>-->
+<!--                        &lt;!&ndash; 验证码图片字体颜色为蓝色 &ndash;&gt;-->
+<!--                        <prop key="kaptcha.textproducer.font.color">blue</prop>-->
+<!--                        &lt;!&ndash; 每个字符最大占用40像素 &ndash;&gt;-->
+<!--                        <prop key="kaptcha.textproducer.font.size">40</prop>-->
+<!--                        &lt;!&ndash; 验证码包含4个字符 &ndash;&gt;-->
+<!--                        <prop key="kaptcha.textproducer.char.length">4</prop>-->
+<!--                    </props>-->
+<!--                </constructor-arg>-->
+<!--            </bean>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!--验证码图片不生成边框-->
+                        <prop key="kaptcha.border">no</prop>
+                        <!-- 验证码图片宽度为120像素 -->
+                        <prop key="kaptcha.image.width">120</prop>
+                        <!-- 验证码图片字体颜色为蓝色 -->
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <!-- 每个字符最大占用40像素 -->
+                        <prop key="kaptcha.textproducer.font.size">40</prop>
+                        <!-- 验证码包含4个字符 -->
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
 </beans>
