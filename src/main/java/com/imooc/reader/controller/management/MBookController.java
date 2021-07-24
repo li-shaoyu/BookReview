@@ -1,10 +1,17 @@
 package com.imooc.reader.controller.management;
 
+import com.imooc.reader.entity.Book;
+import com.imooc.reader.service.BookService;
+import com.imooc.reader.service.exception.BussinessException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +30,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/management/book")
 public class MBookController {
+
+    @Resource
+    private BookService bookService;
 
     // 图书管理功能
     @GetMapping("/index.html")
@@ -57,4 +67,44 @@ public class MBookController {
         return result;
     }
 
+    /**
+     * 新增图书
+     * @param book
+     * @return
+     */
+    @PostMapping("/create")
+    @ResponseBody
+    public Map createBook(Book book){
+        Map result = new HashMap();
+        try {
+            // 1、 设置默认评价人数和分数
+            book.setEvaluationQuantity(0);
+            book.setEvaluationScore(0f);
+
+            // 2、 解析图书详情
+            // JavaHTML解析器Jsoup，提取需要的数据
+            Document doc = Jsoup.parse(book.getDescription());
+
+            // 获取图书详情第一图的元素对象
+            Element img = doc.select("img").first();
+
+            // attr获取当前元素的指定值
+            String cover = img.attr("src");
+
+            // 来自于description描述的第一幅图
+            book.setCover(cover);
+
+            // 3、 保存
+            bookService.createBook(book);
+
+            // 返回前端的信息
+            result.put("code", "0");
+            result.put("msg", "success");
+        }catch (BussinessException ex){
+            ex.printStackTrace();
+            result.put("code", ex.getCode());
+            result.put("msg", ex.getMsg());
+        }
+        return result;
+    }
 }

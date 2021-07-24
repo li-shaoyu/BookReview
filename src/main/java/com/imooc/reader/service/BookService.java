@@ -34,4 +34,9 @@ public interface BookService {
      */
     public void updateEvaluation();
 
+    /**
+     * 创建新的图书
+     */
+    public Book createBook(Book book);
+
 }

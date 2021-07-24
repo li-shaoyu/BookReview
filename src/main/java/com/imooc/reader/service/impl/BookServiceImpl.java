@@ -80,4 +80,15 @@ public class BookServiceImpl implements BookService {
         bookMapper.updateEvaluation();
     }
 
+    /**
+     * 新增图书
+     * @param book 新图书数据
+     * @return 更新后的数据
+     */
+    @Transactional
+    public Book createBook(Book book) {
+        bookMapper.insert(book);
+        return book;
+    }
+
 }
