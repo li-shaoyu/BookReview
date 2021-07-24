@@ -141,5 +141,62 @@ public class MBookController {
         return result;
     }
 
+    /**
+     * 获取图书详细信息
+     * @param bookId
+     * @return
+     */
+    @GetMapping("/id/{id}")
+    @ResponseBody
+    public Map selectById(@PathVariable("id") Long bookId){
+        Book book = bookService.selectById(bookId);
+        Map result = new HashMap();
+        result.put("code", "0");
+        result.put("msg", "success");
+        result.put("data", book);
+        return result;
+    }
+
+    /**
+     * 更新图书数据
+     * @param book
+     * @return
+     */
+    @PostMapping("/update")
+    @ResponseBody
+    public Map updateBook(Book book){
+        Map result = new HashMap();
+        try {
+            // 创建临时对象，获取原始数据库记录，在这个rawBook上进行更新，以免数据混乱
+            Book rawBook = bookService.selectById(book.getBookId());
+            // 将前端获取的值录入rawBook（原始的数据），可以理解为重置
+            rawBook.setBookName(book.getBookName());
+            rawBook.setSubTitle(book.getSubTitle());
+            rawBook.setAuthor(book.getAuthor());
+            rawBook.setCategoryId(book.getCategoryId());
+            rawBook.setDescription(book.getDescription());
+
+            // 更新第一张图片,因为可能变化了
+            // 获取图书详情第一图的元素对象
+            Document doc = Jsoup.parse(book.getDescription());
+            // attr获取当前元素的指定值
+            String cover = doc.select("img").first().attr("src");
+
+            rawBook.setCover(cover);
+
+            // 最后再覆盖
+            bookService.updateBook(rawBook);
+
+            // 返回前端信息
+            result.put("code", "0");
+            result.put("msg", "success");
+        }catch (BussinessException ex){
+            ex.printStackTrace();
+            result.put("code", ex.getCode());
+            result.put("msg", ex.getMsg());
+        }
+        return result;
+    }
+
 
 }

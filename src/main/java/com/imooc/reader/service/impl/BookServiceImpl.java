@@ -91,4 +91,16 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
+    /**
+     * 更新图书
+     * @param book 新图书数据
+     * @return 更新后的数据
+     */
+    @Transactional
+    public Book updateBook(Book book) {
+        bookMapper.updateById(book);
+        return book;
+    }
+
+
 }
