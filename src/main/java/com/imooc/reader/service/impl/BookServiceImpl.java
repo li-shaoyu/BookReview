@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.reader.entity.Book;
+import com.imooc.reader.entity.Evaluation;
+import com.imooc.reader.entity.MemberReadState;
 import com.imooc.reader.mapper.BookMapper;
+import com.imooc.reader.mapper.EvaluationMapper;
+import com.imooc.reader.mapper.MemberReadStateMapper;
 import com.imooc.reader.service.BookService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,9 +27,13 @@ import javax.annotation.Resource;
 // 声明式事务注解
 @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
 public class BookServiceImpl implements BookService {
-//    注入BookMapper，其实现BaseMapper，有许多CURD方法
+    //    注入BookMapper，其实现BaseMapper，有许多CURD方法
     @Resource
     private BookMapper bookMapper;
+    @Resource
+    private MemberReadStateMapper memberReadStateMapper;
+    @Resource
+    private EvaluationMapper evaluationMapper;
 
     /**
      * 分页查询图书
@@ -102,5 +110,25 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
+    /**
+     * 删除图书及相关数据
+     * @param bookId 图书编号
+     */
+    @Transactional
+    public void deleteBook(Long bookId) {
+        // 1、 删除book表的数据
+        bookMapper.deleteById(bookId);
+
+        // 2、 删除阅读状态表的数据
+        QueryWrapper<MemberReadState> mrsQueryWrapper = new QueryWrapper<MemberReadState>();
+        mrsQueryWrapper.eq("book_id", bookId);
+        memberReadStateMapper.delete(mrsQueryWrapper);
+
+        // 3、 删除评论表格的数据
+        QueryWrapper<Evaluation> evaluationQueryWrapper = new QueryWrapper<Evaluation>();
+        evaluationQueryWrapper.eq("book_id", bookId);
+        evaluationMapper.delete(evaluationQueryWrapper);
+
+    }
 
 }
