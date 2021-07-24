@@ -2,12 +2,15 @@ package com.imooc.reader.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.imooc.reader.entity.Member;
+import com.imooc.reader.entity.MemberReadState;
 import com.imooc.reader.mapper.EvaluationMapper;
 import com.imooc.reader.mapper.MemberMapper;
+import com.imooc.reader.mapper.MemberReadStateMapper;
 import com.imooc.reader.service.MemberService;
 import com.imooc.reader.service.exception.BussinessException;
 import com.imooc.reader.service.utils.MD5Utils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -28,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     private MemberMapper memberMapper;
-//    @Resource
-//    private MemberReadStateMapper memberReadStateMapper;
+    @Resource
+    private MemberReadStateMapper memberReadStateMapper;
     @Resource
     private EvaluationMapper evaluationMapper;
 
@@ -90,6 +93,61 @@ public class MemberServiceImpl implements MemberService {
             throw new BussinessException("M03", "输入密码有误");
         }
         return member;
+    }
+
+    /**
+     * 获取阅读状态
+     *
+     * @param memberId 会员编号
+     * @param bookId   图书编号
+     * @return 阅读状态对象
+     */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED,readOnly = true)
+    public MemberReadState selectMemberReadState(Long memberId, Long bookId) {
+        // 1、 传入参数，组织查询条件
+        QueryWrapper<MemberReadState> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("book_id", bookId);
+        queryWrapper.eq("member_id", memberId);
+
+        // 2、 查询
+        MemberReadState memberReadState = memberReadStateMapper.selectOne(queryWrapper);
+        return memberReadState;
+    }
+
+    /**
+     * 更新阅读状态
+     *
+     * @param memberId  会员编号
+     * @param bookId    图书编号
+     * @param readState 阅读状态
+     * @return 阅读状态对象
+     */
+    public MemberReadState updateMemberReadState(Long memberId, Long bookId, Integer readState) {
+        // 1、 构建查询条件
+        QueryWrapper<MemberReadState> queryWrapper = new QueryWrapper<MemberReadState>();
+        queryWrapper.eq("book_id", bookId);
+        queryWrapper.eq("member_id", memberId);
+
+        // 2、 执行查询
+        MemberReadState memberReadState = memberReadStateMapper.selectOne(queryWrapper);
+
+        // 3、 无则新增,有则更新
+        if (memberReadState == null) {
+            // 新增
+            memberReadState = new MemberReadState();
+            memberReadState.setMemberId(memberId);
+            memberReadState.setBookId(bookId);
+            memberReadState.setReadState(readState);
+            memberReadState.setCreateTime(new Date());
+            // 插入新数据
+            memberReadStateMapper.insert(memberReadState);
+        } else {
+            // 已经存在，更改State即可
+            memberReadState.setReadState(readState);
+            memberReadStateMapper.updateById(memberReadState);
+        }
+
+        return memberReadState;
     }
 
 }

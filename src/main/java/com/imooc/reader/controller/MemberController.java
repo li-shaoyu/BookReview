@@ -98,5 +98,28 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * 更新想看/看过阅读状态
+     * @param memberId 会员id
+     * @param bookId 图书id
+     * @param readState 阅读状态
+     * @return 处理结果
+     */
+    @PostMapping("/update_read_state")
+    @ResponseBody
+    public Map updateReadState(Long memberId , Long bookId , Integer readState){
+        Map result = new HashMap();
+        try {
+            memberService.updateMemberReadState(memberId, bookId, readState);
+            result.put("code", "0");
+            result.put("msg", "success");
+        }catch(BussinessException ex){
+            ex.printStackTrace();
+            result.put("code", ex.getCode());
+            result.put("msg", ex.getMsg());
+        }
+        return result;
+    }
+
 
 }

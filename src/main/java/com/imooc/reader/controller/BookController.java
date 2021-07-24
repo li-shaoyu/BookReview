@@ -1,12 +1,11 @@
 package com.imooc.reader.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.imooc.reader.entity.Book;
-import com.imooc.reader.entity.Category;
-import com.imooc.reader.entity.Evaluation;
+import com.imooc.reader.entity.*;
 import com.imooc.reader.service.BookService;
 import com.imooc.reader.service.CategoryService;
 import com.imooc.reader.service.EvaluationService;
+import com.imooc.reader.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +34,9 @@ public class BookController {
 
     @Resource
     private EvaluationService evaluationService;
+
+    @Resource
+    private MemberService memberService;
 
     /**
      * 显示首页
@@ -79,8 +81,17 @@ public class BookController {
         // 把具体的id传入，得到评论列表
         List<Evaluation> evaluationList = evaluationService.selectByBookId(id);
 
+        // 当用户点开一本书时，就要查询该用户对于这本书的阅读状态
+        Member member = (Member)session.getAttribute("loginMember");
+
         // 跳转到名字为detail的freemaker页面
         ModelAndView mav = new ModelAndView("/detail");
+
+        if(member != null){
+            // 获取会员阅读状态
+            MemberReadState memberReadState = memberService.selectMemberReadState(member.getMemberId(), id);
+            mav.addObject("memberReadState", memberReadState);
+        }
 
         // 将查询到的对象放入到ModelAndView中
         mav.addObject("book", book);

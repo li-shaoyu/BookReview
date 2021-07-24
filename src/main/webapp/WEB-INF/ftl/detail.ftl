@@ -49,6 +49,72 @@
         $(function () {
             $(".stars").raty({readOnly: true});
         })
+
+        $(function () {
+            <#if memberReadState ??>
+            // 重选阅读状态
+            $("*[data-read-state='${memberReadState.readState}']").addClass("highlight");
+            </#if>
+            <#if !loginMember ??>
+            $("*[data-read-state],#btnEvaluation,*[data-evaluation-id]").click(function(){
+                // 未登录情况下提示"需要登录"
+                $("#exampleModalCenter").modal("show");
+            })
+            </#if>
+
+            <#if loginMember ??>
+            /**
+             * 更新会员阅读状态
+             */
+            $("*[data-read-state]").click(function () {
+                // 会员阅读状态
+                var readState = $(this).data("read-state");
+                // 发送请求
+                $.post("/update_read_state", {
+                    memberId:${loginMember.memberId},
+                    bookId:${book.bookId},
+                    readState: readState
+                }, function (json) {
+                    if (json.code == "0") {
+                        $("*[data-read-state]").removeClass("highlight");
+                        $("*[data-read-state='" + readState + "']").addClass("highlight");
+                    }
+                }, "json")
+            });
+
+            $("#btnEvaluation").click(function(){
+                $("#score").raty({});// 转换为星型组件
+                $("#dlgEvaluation").modal("show");// 显示短评对话框
+            })
+            // 评论对话框提交数据
+            $("#btnSubmit").click(function(){
+                var score = $("#score").raty("score");// 获取评分
+                var content = $("#content").val();
+                if(score == 0 || $.trim(content) == ""){
+                    return;
+                }
+                $.post("/evaluate" , {
+                    score : score,
+                    bookId : ${book.bookId},
+                    memberId : ${loginMember.memberId},
+                    content : content
+                },function(json){
+                    if(json.code = "0"){
+                        window.location.reload();// 刷新当前页面
+                    }
+                },"json")
+            })
+            // 评论点赞
+            $("*[data-evaluation-id]").click(function(){
+                var evaluationId = $(this).data("evaluation-id");
+                $.post("/enjoy",{evaluationId:evaluationId},function(json){
+                    if(json.code == "0"){
+                        $("*[data-evaluation-id='" + evaluationId + "'] span").text(json.evaluation.enjoy);
+                    }
+                },"json")
+            })
+            </#if>
+        })
     </script>
 </head>
 <body>
