@@ -152,6 +152,13 @@
             <version>1.14</version>
         </dependency>
 
+        <!-- Spring MVC文件上传底层依赖 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
 </project>

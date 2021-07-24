@@ -138,4 +138,9 @@
     <!-- 开启Spring Task定时任务的注解模式-->
     <task:annotation-driven/>
 
+    <!-- 激活Spring MVC 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
 </beans>
